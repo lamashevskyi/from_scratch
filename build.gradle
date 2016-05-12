@@ -1,10 +1,36 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
+apply plugin: 'ru.d10xa.allure'
 
 version = '1.0'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "ru.d10xa:gradle-allure-plugin:0.5.0"
+    }
+}
+
 repositories {
     mavenCentral()
+    jcenter()
+}
+
+configurations {
+    agent
+}
+
+allure {
+    aspectjweaver = true
+    junit = true
+    testNG = false
+    spock = false
+    geb = false
+
+    allureResultsDir = "$buildDir/allure-results"
+    allureReportDir = "$buildDir/allure-report"
 }
 
 dependencies {
@@ -12,7 +38,19 @@ dependencies {
     compile group: 'org.seleniumhq.selenium', name:'selenium-server', version:'2.53.0'
     compile group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '1.4.2'
     compile group: 'org.testng', name: 'testng', version: '6.9.10'
+//    compile group: 'ru.yandex.qatools.allure', name: 'allure-core', version: "${allureVersion}"
+    compile group: 'ru.yandex.qatools.allure', name: 'allure-testng-adaptor', version: "${allureVersion}"
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
+    agent "org.aspectj:aspectjweaver:${aspectjVersion}"
+
+}
+
+test.doFirst {
+    jvmArgs "-javaagent:${configurations.agent.singleFile}"
+}
+
+test {
+    useTestNG()
 }

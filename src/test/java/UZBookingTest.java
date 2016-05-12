@@ -19,10 +19,10 @@ public class UZBookingTest extends DriverSetup {
         driver.quit();
     }
 
-    @DataProvider(name = "stations")
+    @DataProvider(name = "stations", parallel = false)
     public Object[][] stationsDataProvider() {
         return new Object[][] {
-//                {"Kyi", "Kyiv", "Ivano", "Ivano-Frankivsk", "143 К"},
+                {"Kyi", "Kyiv", "Ivano", "Ivano-Frankivsk", "143 К"},
                 {"Ivano", "Ivano-Frankivsk", "Kyi", "Kyiv", "143 Л"}
         };
     }
@@ -41,7 +41,7 @@ public class UZBookingTest extends DriverSetup {
         Assert.assertEquals(UZ.getStationToText(), to, "Station To is incorrect");
     }
 
-    @Test (dataProvider = "stations", enabled = false)
+    @Test (dataProvider = "stations", enabled = true)
     public void trainSearch(String fromShort, String from, String toShort, String to, String trainNumber) {
         UZ.openPage();
         UZ.search(fromShort, toShort);
