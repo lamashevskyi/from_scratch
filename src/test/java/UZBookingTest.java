@@ -1,19 +1,16 @@
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-public class UZBookingTest {
+public class UZBookingTest extends DriverSetup {
 
     WebDriver driver;
     UZBookingPage UZ;
 
     @BeforeMethod
     public void init() {
-        driver = new ChromeDriver();
+        driver = getDriver(Browser.CHROME);
         UZ = PageFactory.initElements(driver, UZBookingPage.class);
     }
 
@@ -22,24 +19,36 @@ public class UZBookingTest {
         driver.quit();
     }
 
-    @Test (enabled = true)
-    public void enterStationFromAndSelectAutosuggestion() {
-        UZ.openPage();
-        UZ.typeFromStation("Kyi");
-        Assert.assertEquals(UZ.getStationFromText(), "Kyiv", "Station From is incorrect");
+    @DataProvider(name = "stations")
+    public Object[][] stationsDataProvider() {
+        return new Object[][] {
+//                {"Kyi", "Kyiv", "Ivano", "Ivano-Frankivsk", "143 К"},
+                {"Ivano", "Ivano-Frankivsk", "Kyi", "Kyiv", "143 Л"}
+        };
     }
 
-    @Test (enabled = true)
-    public void enterStationToAndSelectAutosuggestion() {
+    @Test (dataProvider = "stations", enabled = true)
+    public void enterStationFromAndSelectAutosuggestion(String fromShort, String from, String toShort, String to, String trainNumber) {
         UZ.openPage();
-        UZ.typeToStation("Ode");
-        Assert.assertEquals(UZ.getStationToText(), "Odesa", "Station To is incorrect");
+        UZ.typeFromStation(fromShort);
+        Assert.assertEquals(UZ.getStationFromText(), from, "Station From is incorrect");
     }
 
-    @Test (enabled = true)
-    public void trainSearch() {
+    @Test (dataProvider = "stations", enabled = false)
+    public void enterStationToAndSelectAutosuggestion(String fromShort, String from, String toShort, String to, String trainNumber) {
         UZ.openPage();
-        UZ.search("Kyi", "Ode");
+        UZ.typeToStation(toShort);
+        Assert.assertEquals(UZ.getStationToText(), to, "Station To is incorrect");
+    }
+
+    @Test (dataProvider = "stations", enabled = false)
+    public void trainSearch(String fromShort, String from, String toShort, String to, String trainNumber) {
+        UZ.openPage();
+        UZ.search(fromShort, toShort);
         Assert.assertTrue(UZ.resultsNotEmpty());
     }
+
+
+
+
 }

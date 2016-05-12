@@ -35,7 +35,7 @@ public class UZBookingPage {
     }
 
     public void openPage() {
-        driver.get("http://booking.uz.gov.ua/en/");
+        driver.get("http://booking.uz.gov.ua/en");
     }
 
     public void typeFromStation(String from) {

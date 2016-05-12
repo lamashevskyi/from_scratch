@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="UZSuite">
+	<parameter name="browser" value="CHROME"/>
+	<test name="UZTest" parallel="none">
+		<!--<parameter name="url" value="http://booking.uz.gov.ua/en"/>-->
+		<!--<classes>-->
+			<!--<class name="uz.BookingTest"/>-->
+			<!--<class name="uz.StationSuggestionsTest"/>-->
+		<!--</classes>-->
+	</test>
+</suite>
