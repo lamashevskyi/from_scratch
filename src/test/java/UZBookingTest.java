@@ -22,9 +22,24 @@ public class UZBookingTest {
         driver.quit();
     }
 
-    @Test
-    public void openPageTest() {
+    @Test (enabled = true)
+    public void enterStationFromAndSelectAutosuggestion() {
         UZ.openPage();
-        Assert.assertTrue(true);
+        UZ.typeFromStation("Kyi");
+        Assert.assertEquals(UZ.getStationFromText(), "Kyiv", "Station From is incorrect");
+    }
+
+    @Test (enabled = true)
+    public void enterStationToAndSelectAutosuggestion() {
+        UZ.openPage();
+        UZ.typeToStation("Ode");
+        Assert.assertEquals(UZ.getStationToText(), "Odesa", "Station To is incorrect");
+    }
+
+    @Test (enabled = true)
+    public void trainSearch() {
+        UZ.openPage();
+        UZ.search("Kyi", "Ode");
+        Assert.assertTrue(UZ.resultsNotEmpty());
     }
 }
